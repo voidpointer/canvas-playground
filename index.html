@@ -21,9 +21,8 @@
 			}
 			#pageTitle {
 				float:left;
-				width:128px;
-				font-size:13px;
-				font-family:monospace;
+				width:140px;
+				font:bold 13px monospace;
 			}
 			#myModules {
 				float:left;
@@ -48,6 +47,10 @@
 			#myControls {
 				float:left;
 				width:128px;
+				margin-left:8px;
+			}
+			.slider {
+				margin:20px;
 			}
 			#myCanvas {
 				float:left;
@@ -57,26 +60,43 @@
 		</style>
 		<script>
 			$(function(){
+				var mods = Modules.getAllModules();
+
 				// function to select module (update button selection and render module)
-				var moduleSelectFunc = function(idx) {
+				var getModuleSelectFunc = function(idx) {
 					return function() {
+						// update selected button
 						$("#myModules button").removeClass("active");
 						$("button[data-slug=" + mods[idx].slug + "]").addClass("active");
+
+						// update visibility of selected controls
+						$("#myControls>div").hide();
+						$("#myControls>div[data-slug=" + mods[idx].slug + "]").show();
+
 						mods[idx].obj.render();
 					}
 				};
 
-				// add all modules to top menu
-				var mods = Modules.getAllModules();
+				// initialize all modules
 				for(var idx in mods) {
-					var el = $("<button>").text(mods[idx].name).attr("data-slug", mods[idx].slug);
-					el.click(moduleSelectFunc(idx));
+					// add module button to top menu
+					var el = $("<button>")
+						.text(mods[idx].name)
+						.attr("data-slug", mods[idx].slug)
+						.click(getModuleSelectFunc(idx));
 					el.appendTo("#myModules");
+
+					// init controls for module
+					var el = $("<div>")
+						.css("display", "none")
+						.attr("data-slug", mods[idx].slug);
+					$("#myControls").append(el);
+					mods[idx].obj.initControls(el);
 				}
 
 				// get default module and render it
 				var idx = Modules.getCurrentModule();
-				moduleSelectFunc(idx)();
+				getModuleSelectFunc(idx)();
 			});
 		</script>
 	</head>

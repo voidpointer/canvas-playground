@@ -2,6 +2,33 @@ var Pattern1App = {
 	initialRandomSeed: 1,
 	tileSize: 32,
 	lineWidth: 1,
+	initControls: function(el) {
+		el.html("Tile size:" +
+			"<div id='tileSizeSlider' class='slider'></div>" +
+			"Line width:" +
+			"<div id='lineWidthSlider' class='slider'></div>" +
+			"<button onclick='Pattern1App.initialRandomSeed = Math.random() * 1000;Pattern1App.render()'>Mix Up Pattern</button>");
+
+		$('#tileSizeSlider').slider({
+			value: 2,
+			min: 1,
+			max: 5,
+			slide: function(event, ui) {
+				Pattern1App.tileSize = Math.pow(2, ui.value + 3);
+				Pattern1App.render();
+			}
+		});
+
+		$('#lineWidthSlider').slider({
+			value: 1,
+			min: 1,
+			max: 8,
+			slide: function(event, ui) {
+				Pattern1App.lineWidth = ui.value;
+				Pattern1App.render();
+			}
+		});		
+	},
 	render: function() {
 		this.seed = this.initialRandomSeed;
 
@@ -68,35 +95,8 @@ var Pattern1App = {
 	}
 };
 
-
 Modules.addModule({
 	name: 'Pattern',
 	slug: 'pattern1',
 	obj: Pattern1App
 });
-
-/*
-$(function(){
-	CanvasApp.render();
-
-	$('#tileSizeSlider').slider({
-		value: 2,
-		min: 1,
-		max: 5,
-		slide: function(event, ui) {
-			CanvasApp.tileSize = Math.pow(2, ui.value + 3);
-			CanvasApp.render();
-		}
-	});
-
-	$('#lineWidthSlider').slider({
-		value: 1,
-		min: 1,
-		max: 8,
-		slide: function(event, ui) {
-			CanvasApp.lineWidth = ui.value;
-			CanvasApp.render();
-		}
-	});
-});
-*/

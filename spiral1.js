@@ -2,6 +2,32 @@ var Spiral1App = {
 	patternIndex: 1,
 	circleRadius: 7,
 	numPoints: 512,
+	initControls: function(el) {
+		el.html("Pattern:" +
+			"<div id='patternIndexSlider' class='slider'></div>" +
+			"Circle Radius:" + 
+			"<div id='circleRadiusSlider' class='slider'></div>");
+
+		$('#patternIndexSlider').slider({
+			value: 1,
+			min: 1,
+			max: 100,
+			slide: function(event, ui) {
+				Spiral1App.patternIndex = ui.value;
+				Spiral1App.render();
+			}
+		});
+
+		$('#circleRadiusSlider').slider({
+			value: 7,
+			min: 0,
+			max: 10,
+			slide: function(event, ui) {
+				Spiral1App.circleRadius = ui.value;
+				Spiral1App.render();
+			}
+		});
+	},
 	render: function() {
 		this.canvas = document.getElementById('myCanvas');
 		this.context = this.canvas.getContext('2d');
@@ -44,29 +70,3 @@ Modules.addModule({
 	slug: 'spiral1',
 	obj: Spiral1App
 });
-
-/*
-$(function(){
-	CanvasApp.render();
-
-	$('#patternIndexSlider').slider({
-		value: 1,
-		min: 1,
-		max: 100,
-		slide: function(event, ui) {
-			CanvasApp.patternIndex = ui.value;
-			CanvasApp.render();
-		}
-	});
-
-	$('#circleRadiusSlider').slider({
-		value: 7,
-		min: 0,
-		max: 10,
-		slide: function(event, ui) {
-			CanvasApp.circleRadius = ui.value;
-			CanvasApp.render();
-		}
-	});
-});
-*/

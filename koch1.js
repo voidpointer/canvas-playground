@@ -1,4 +1,7 @@
 var Koch1App = {
+	initControls: function(el) {
+		el.html("");
+	},
 	render: function() {
 		this.canvas = document.getElementById('myCanvas');
 		this.context = this.canvas.getContext('2d');
