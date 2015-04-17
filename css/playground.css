@@ -11,6 +11,7 @@ body {
 	float:left;
 	width:140px;
 	font:bold 13px monospace;
+	cursor:pointer;
 }
 #pgModules {
 	float:left;
