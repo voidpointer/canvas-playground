@@ -25,6 +25,9 @@
 						$("#pgControls>div").hide();
 						$("#pgControls>div[data-slug=" + mods[idx].slug + "]").show();
 
+						// update URL
+						history.pushState(null, null, "#" + mods[idx].slug);
+
 						mods[idx].obj.render();
 					}
 				};
