@@ -46,5 +46,6 @@ var Koch1App = {
 Playground.addModule({
 	name: 'Koch',
 	slug: 'koch1',
-	obj: Koch1App
+	obj: Koch1App,
+	source: ['js/koch1.js', 'js/turtle.js']
 });

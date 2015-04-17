@@ -98,5 +98,6 @@ var Pattern1App = {
 Playground.addModule({
 	name: 'Pattern',
 	slug: 'pattern1',
-	obj: Pattern1App
+	obj: Pattern1App,
+	source: ['js/pattern1.js']
 });

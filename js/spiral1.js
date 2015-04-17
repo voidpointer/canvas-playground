@@ -68,5 +68,6 @@ var Spiral1App = {
 Playground.addModule({
 	name: 'Spiral',
 	slug: 'spiral1',
-	obj: Spiral1App
+	obj: Spiral1App,
+	source: ['js/spiral1.js']
 });
