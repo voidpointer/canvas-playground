@@ -3,7 +3,7 @@ var Koch1App = {
 		el.html("");
 	},
 	render: function() {
-		this.canvas = document.getElementById('myCanvas');
+		this.canvas = document.getElementById('pgCanvas');
 		this.context = this.canvas.getContext('2d');
 
 		this.clearCanvas();

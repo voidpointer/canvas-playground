@@ -32,7 +32,7 @@ var Pattern1App = {
 	render: function() {
 		this.seed = this.initialRandomSeed;
 
-		this.canvas = document.getElementById('myCanvas');
+		this.canvas = document.getElementById('pgCanvas');
 		this.context = this.canvas.getContext('2d');
 
 		this.clearCanvas();
