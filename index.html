@@ -1,4 +1,64 @@
-<p>Better interface coming soon...</p>
-<a href="canvas_koch.html">canvas_koch.html</a><br>
-<a href="canvas_pattern.html">canvas_pattern.html</a><br>
-<a href="canvas_spiral.html">canvas_spiral.html</a><br>
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" href="css/playground.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+		<script src="js/modules.js"></script>
+		<script src="js/pattern1.js"></script>
+		<script src="js/spiral1.js"></script>
+		<script src="js/koch1.js"></script>
+		<script src="js/turtle.js"></script>
+		<script>
+			$(function(){
+				var mods = Modules.getAllModules();
+
+				// function to select module (update button selection and render module)
+				var getModuleSelectFunc = function(idx) {
+					return function() {
+						// update selected button
+						$("#pgModules button").removeClass("active");
+						$("button[data-slug=" + mods[idx].slug + "]").addClass("active");
+
+						// update visibility of selected controls
+						$("#pgControls>div").hide();
+						$("#pgControls>div[data-slug=" + mods[idx].slug + "]").show();
+
+						mods[idx].obj.render();
+					}
+				};
+
+				// initialize all modules
+				for(var idx in mods) {
+					// add module button to top menu
+					var el = $("<button>")
+						.text(mods[idx].name)
+						.attr("data-slug", mods[idx].slug)
+						.click(getModuleSelectFunc(idx));
+					el.appendTo("#pgModules");
+
+					// init controls for module
+					var el = $("<div>")
+						.css("display", "none")
+						.attr("data-slug", mods[idx].slug);
+					$("#pgControls").append(el);
+					mods[idx].obj.initControls(el);
+				}
+
+				// get default module and render it
+				var idx = Modules.getCurrentModule();
+				getModuleSelectFunc(idx)();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="topArea">
+			<div id="pageTitle">Canvas<br>Playground</div>
+			<div id="pgModules"></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div id="pgControls"></div>
+		<canvas id="pgCanvas" width="1024" height="1024"></canvas>
+	</body>
+</html>
