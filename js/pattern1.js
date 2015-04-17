@@ -95,7 +95,7 @@ var Pattern1App = {
 	}
 };
 
-Modules.addModule({
+Playground.addModule({
 	name: 'Pattern',
 	slug: 'pattern1',
 	obj: Pattern1App
