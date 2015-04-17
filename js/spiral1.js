@@ -65,7 +65,7 @@ var Spiral1App = {
 	}
 };
 
-Modules.addModule({
+Playground.addModule({
 	name: 'Spiral',
 	slug: 'spiral1',
 	obj: Spiral1App

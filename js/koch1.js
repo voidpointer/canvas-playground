@@ -43,7 +43,7 @@ var Koch1App = {
 	}
 };
 
-Modules.addModule({
+Playground.addModule({
 	name: 'Koch',
 	slug: 'koch1',
 	obj: Koch1App
