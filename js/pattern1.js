@@ -35,7 +35,7 @@ var Pattern1App = {
 		this.canvas = document.getElementById('pgCanvas');
 		this.context = this.canvas.getContext('2d');
 
-		this.clearCanvas();
+		Playground.clearCanvas();
 
 		this.context.lineWidth = this.tileSize / 2 * (this.lineWidth - 1) / 7 + 1;
 		this.context.strokeStyle = 'black';
@@ -81,12 +81,6 @@ var Pattern1App = {
 		this.context.moveTo(0, this.tileSize/2);
 		this.context.bezierCurveTo(this.tileSize/4, this.tileSize/2, this.tileSize/2, this.tileSize*3/4, this.tileSize/2, this.tileSize);
 		this.context.stroke();	
-	},
-	clearCanvas: function() {
-		this.context.beginPath();
-		this.context.rect(0, 0, this.canvas.width, this.canvas.height);
-		this.context.fillStyle = 'white';
-		this.context.fill();
 	},
 	random: function() {
 		// From http://stackoverflow.com/questions/521295/javascript-random-seeds
