@@ -32,7 +32,7 @@ var Spiral1App = {
 		this.canvas = document.getElementById('pgCanvas');
 		this.context = this.canvas.getContext('2d');
 
-		this.clearCanvas();
+		Playground.clearCanvas();
 
 		this.context.lineWidth = 1;
 		this.context.strokeStyle = 'black';
@@ -53,12 +53,6 @@ var Spiral1App = {
 			this.context.arc(x, y, index / (50 - this.circleRadius * 4), 0, Math.PI * 2);
 			this.context.fill();
 		}
-	},
-	clearCanvas: function() {
-		this.context.beginPath();
-		this.context.rect(0, 0, this.canvas.width, this.canvas.height);
-		this.context.fillStyle = 'white';
-		this.context.fill();
 	},
 	distance: function(x1, y1, x2, y2) {
 		return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));

@@ -6,7 +6,7 @@ var Koch1App = {
 		this.canvas = document.getElementById('pgCanvas');
 		this.context = this.canvas.getContext('2d');
 
-		this.clearCanvas();
+		Playground.clearCanvas();
 
 		sideLength = this.canvas.width * 0.8;
 
@@ -34,12 +34,6 @@ var Koch1App = {
 		level ? this.kochLine(distance, level) : Turtle.forward(distance);
 		Turtle.left(60);
 		level ? this.kochLine(distance, level) : Turtle.forward(distance);
-	},
-	clearCanvas: function() {
-		this.context.beginPath();
-		this.context.rect(0, 0, this.canvas.width, this.canvas.height);
-		this.context.fillStyle = 'white';
-		this.context.fill();
 	}
 };
 

@@ -111,5 +111,14 @@ var Playground = {
 	},
 	getAllModules: function() {
 		return this.modules;
-	}	
+	},
+	clearCanvas: function() {
+		var canvas = document.getElementById('pgCanvas');
+		var context = canvas.getContext('2d');
+
+		context.beginPath();
+		context.rect(0, 0, canvas.width, canvas.height);
+		context.fillStyle = 'white';
+		context.fill();
+	}
 };
