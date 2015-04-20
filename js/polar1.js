@@ -1,4 +1,5 @@
 var Polar1App = {
+	seed: 5,
 	initControls: function(el) {
 		el.html("");
 	},
@@ -9,7 +10,7 @@ var Polar1App = {
 		Playground.clearCanvas();
 
 		var numShapes = 10;
-		var colors = this.generateColors(numShapes);
+		var colors = this.generateColors2(numShapes);
 		var colorIndex = 0;
 		for(var i = numShapes; i > 0; i--) {
 			var diff = (this.canvas.width / 2 * 1.6) / numShapes;
@@ -59,6 +60,40 @@ var Polar1App = {
 			colors.push('rgb(' + r + ',' + g +',' + b + ')');
 		}
 		return colors;
+
+	},
+	generateColors2: function(count) {
+		// pick two random points in color space
+		do {
+			var r1 = this.random(),
+				g1 = this.random(),
+				b1 = this.random(),
+				r2 = this.random(),
+				g2 = this.random(),
+				b2 = this.random(),
+				distance = Math.sqrt((r2-r1)*(r2-r1)+(g2-g1)*(g2-g1)+(b2-b1)*(b2-b1));
+		} while(distance < 0.75);
+
+		var colors = [];
+		for(i = 0; i < count; i++) {
+			// interpolate colors between points
+			var r = (r2 - r1) * i / count + r1,
+				g = (g2 - g1) * i / count + g1,
+				b = (b2 - b1) * i / count + b1;
+
+			// scale rgb up to 255
+			r = Math.floor(r * 255);
+			g = Math.floor(g * 255);
+			b = Math.floor(b * 255);
+
+			colors.push('rgb(' + r + ',' + g +',' + b + ')');
+		}
+		return colors;
+	},
+	random: function() {
+		// From http://stackoverflow.com/questions/521295/javascript-random-seeds
+		var x = Math.sin(this.seed++) * 10000;
+		return x - Math.floor(x);
 	}
 };
 
