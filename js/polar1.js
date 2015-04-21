@@ -1,13 +1,29 @@
 var Polar1App = {
-	seed: 5,
+	rotation: 0,
+	colorRandomSeed: 5,
+	colorRand: new Random(),
 	initControls: function(el) {
-		el.html("");
+		el.html("Rotation:" +
+			"<div id='rotationSlider' class='slider'></div>" +
+			"<button onclick='Polar1App.colorRandomSeed = Math.random();Polar1App.render()'>Random Color</button>");
+
+		$('#rotationSlider').slider({
+			value: 0,
+			min: 0,
+			max: 89,
+			slide: function(event, ui) {
+				Polar1App.rotation = ui.value * Math.PI / 180;
+				Polar1App.render();
+			}
+		});
 	},
 	render: function() {
 		this.canvas = document.getElementById('pgCanvas');
 		this.context = this.canvas.getContext('2d');
 
 		Playground.clearCanvas();
+
+		this.colorRand.setRandomSeed(this.colorRandomSeed);
 
 		var numShapes = 10;
 		var colors = this.generateColors2(numShapes);
@@ -23,11 +39,11 @@ var Polar1App = {
 		var coords = [];
 		var degDiff = 30, totalDegrees = 3600;
 		for(var i = 0; i < totalDegrees; i += degDiff) {
-			var radians = i * Math.PI / 180;
-			var radius = Math.sin(radians) * outlineScale + outlineRadius
-			coord = {
-				x: this.canvas.width / 2 + Math.cos(radians * 360 / totalDegrees) * radius, 
-				y: this.canvas.height / 2 + Math.sin(radians * 360 / totalDegrees) * radius
+			var radians = i * Math.PI / 180,
+				radius = Math.sin(radians) * outlineScale + outlineRadius,
+				coord = {
+				x: this.canvas.width / 2 + Math.cos(radians * 360 / totalDegrees + this.rotation) * radius, 
+				y: this.canvas.height / 2 + Math.sin(radians * 360 / totalDegrees + this.rotation) * radius
 			};
 			coords.push(coord);
 		}
@@ -65,12 +81,12 @@ var Polar1App = {
 	generateColors2: function(count) {
 		// pick two random points in color space
 		do {
-			var r1 = this.random(),
-				g1 = this.random(),
-				b1 = this.random(),
-				r2 = this.random(),
-				g2 = this.random(),
-				b2 = this.random(),
+			var r1 = this.colorRand.random(),
+				g1 = this.colorRand.random(),
+				b1 = this.colorRand.random(),
+				r2 = this.colorRand.random(),
+				g2 = this.colorRand.random(),
+				b2 = this.colorRand.random(),
 				distance = Math.sqrt((r2-r1)*(r2-r1)+(g2-g1)*(g2-g1)+(b2-b1)*(b2-b1));
 		} while(distance < 0.75);
 
@@ -89,11 +105,6 @@ var Polar1App = {
 			colors.push('rgb(' + r + ',' + g +',' + b + ')');
 		}
 		return colors;
-	},
-	random: function() {
-		// From http://stackoverflow.com/questions/521295/javascript-random-seeds
-		var x = Math.sin(this.seed++) * 10000;
-		return x - Math.floor(x);
 	}
 };
 
