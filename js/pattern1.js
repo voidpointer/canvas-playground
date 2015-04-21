@@ -1,5 +1,6 @@
 var Pattern1App = {
 	initialRandomSeed: 1,
+	rand: new Random(),
 	tileSize: 32,
 	lineWidth: 1,
 	initControls: function(el) {
@@ -7,7 +8,7 @@ var Pattern1App = {
 			"<div id='tileSizeSlider' class='slider'></div>" +
 			"Line width:" +
 			"<div id='lineWidthSlider' class='slider'></div>" +
-			"<button onclick='Pattern1App.initialRandomSeed = Math.random() * 1000;Pattern1App.render()'>Mix Up Pattern</button>");
+			"<button onclick='Pattern1App.initialRandomSeed = Math.random();Pattern1App.render()'>Mix Up Pattern</button>");
 
 		$('#tileSizeSlider').slider({
 			value: 2,
@@ -30,7 +31,7 @@ var Pattern1App = {
 		});		
 	},
 	render: function() {
-		this.seed = this.initialRandomSeed;
+		this.rand.setRandomSeed(this.initialRandomSeed);
 
 		this.canvas = document.getElementById('pgCanvas');
 		this.context = this.canvas.getContext('2d');
@@ -46,7 +47,7 @@ var Pattern1App = {
 			{
 				this.context.translate(x * this.tileSize, y * this.tileSize);
 
-				if (this.random() < 0.5)
+				if (this.rand.random() < 0.5)
 				{
 					this.renderPattern1();
 				}
@@ -81,11 +82,6 @@ var Pattern1App = {
 		this.context.moveTo(0, this.tileSize/2);
 		this.context.bezierCurveTo(this.tileSize/4, this.tileSize/2, this.tileSize/2, this.tileSize*3/4, this.tileSize/2, this.tileSize);
 		this.context.stroke();	
-	},
-	random: function() {
-		// From http://stackoverflow.com/questions/521295/javascript-random-seeds
-		var x = Math.sin(this.seed++) * 10000;
-		return x - Math.floor(x);
 	}
 };
 
