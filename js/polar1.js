@@ -69,8 +69,8 @@ var Polar1App = {
 			var radians = i * Math.PI / 180,
 				radius = Math.sin(radians) * outlineScale + outlineRadius,
 				coord = {
-				x: this.canvas.width / 2 + Math.cos(radians * 360 / totalDegrees + this.rotation) * radius, 
-				y: this.canvas.height / 2 + Math.sin(radians * 360 / totalDegrees + this.rotation) * radius
+				x: this.canvas.width / 2 + Math.cos(radians / this.bumpCount + this.rotation) * radius, 
+				y: this.canvas.height / 2 + Math.sin(radians / this.bumpCount + this.rotation) * radius
 			};
 			coords.push(coord);
 		}
