@@ -34,7 +34,7 @@ var Polar1App = {
 		});
 
 		$('#rotationSlider').slider({
-			value: rotation,
+			value: this.rotation,
 			min: 0,
 			max: 89,
 			slide: function(event, ui) {
