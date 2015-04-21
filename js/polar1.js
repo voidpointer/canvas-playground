@@ -1,17 +1,30 @@
 var Polar1App = {
-	rotation: 0,
+	bumpCount: 12,
 	patternIndex: 0,
+	rotation: 0,
 	colorRandomSeed: 5,
 	colorRand: new Random(),
 	initControls: function(el) {
-		el.html("Pattern:" +
+		el.html("# of Bumps:" +
+			"<div id='bumpCountSlider' class='slider'></div>" +
+			"Pattern:" +
 			"<div id='patternSlider' class='slider'></div>" +
 			"Rotation:" +
 			"<div id='rotationSlider' class='slider'></div>" +
 			"<button onclick='Polar1App.colorRandomSeed = Math.random();Polar1App.render()'>Random Color</button>");
 
+		$('#bumpCountSlider').slider({
+			value: this.bumpCount,
+			min: 2,
+			max: 20,
+			slide: function(event, ui) {
+				Polar1App.bumpCount = ui.value;
+				Polar1App.render();
+			}
+		});
+
 		$('#patternSlider').slider({
-			value: 0,
+			value: this.patternIndex,
 			min: 0,
 			max: 10,
 			slide: function(event, ui) {
@@ -21,7 +34,7 @@ var Polar1App = {
 		});
 
 		$('#rotationSlider').slider({
-			value: 0,
+			value: rotation,
 			min: 0,
 			max: 89,
 			slide: function(event, ui) {
@@ -51,7 +64,7 @@ var Polar1App = {
 
 		var degDiffs = [10, 30, 50, 55, 60, 75, 80, 100, 120, 150, 200];
 		var coords = [];
-		var degDiff = degDiffs[this.patternIndex], totalDegrees = 3600;
+		var degDiff = degDiffs[this.patternIndex], totalDegrees = 360*this.bumpCount;
 		for(var i = 0; i < totalDegrees; i += degDiff) {
 			var radians = i * Math.PI / 180,
 				radius = Math.sin(radians) * outlineScale + outlineRadius,

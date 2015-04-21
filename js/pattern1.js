@@ -21,7 +21,7 @@ var Pattern1App = {
 		});
 
 		$('#lineWidthSlider').slider({
-			value: 1,
+			value: this.lineWidth,
 			min: 1,
 			max: 8,
 			slide: function(event, ui) {
