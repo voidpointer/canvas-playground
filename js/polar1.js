@@ -52,7 +52,7 @@ var Polar1App = {
 		this.colorRand.setRandomSeed(this.colorRandomSeed);
 
 		var numShapes = 10;
-		var colors = this.generateColors2(numShapes);
+		var colors = this.generateColors(numShapes);
 		var colorIndex = 0;
 		for(var i = numShapes; i > 0; i--) {
 			var diff = (this.canvas.width / 2 * 1.6) / numShapes;
@@ -93,19 +93,6 @@ var Polar1App = {
 		this.context.fill();
 	},
 	generateColors: function(count) {
-		var colors = [];
-		for(var i = 0; i < count; i++) {
-			x = 0.5 + Math.cos(i * Math.PI * 2 / count / 4) * 0.5;
-			y = 0.5 + Math.sin(i * Math.PI * 2 / count / 4) * 0.5;
-			r = Math.floor(x * 255);
-			g = Math.floor(y * 255);
-			b = 0;
-			colors.push('rgb(' + r + ',' + g +',' + b + ')');
-		}
-		return colors;
-
-	},
-	generateColors2: function(count) {
 		// pick two random points in color space
 		do {
 			var r1 = this.colorRand.random(),
