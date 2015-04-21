@@ -55,25 +55,42 @@ var Polar1App = {
 		var colors = this.generateColors(numShapes);
 		var colorIndex = 0;
 		for(var i = numShapes; i > 0; i--) {
-			var diff = (this.canvas.width / 2 * 1.6) / numShapes;
+			var maxRadius = this.canvas.width / 2 * 1.6; // just big enough to cover all of the canvas
+			var diff = maxRadius / numShapes;
 			this.renderShape(i * diff, diff * (0.1*this.amplitude), colors[colorIndex++]);
 		}
 	},
 	renderShape: function(outlineRadius, outlineScale, color) {
 		this.context.beginPath();
 
+		// generate points on our curve
 		var coords = [];
-		var degDiff = 15, 
-			totalDegrees = 360*this.bumpCount;
-		for(var i = 0; i < totalDegrees; i += degDiff) {
-			var radians = i * Math.PI / 180,
-				radius = Math.cos(radians) * outlineScale + outlineRadius,
+		var degDiff = 15 / this.bumpCount;
+		var radDiff = degDiff * Math.PI / 180;
+		var epsilon = 0.000001;
+		for(var radians = 0; radians + epsilon < 2 * Math.PI; radians += radDiff) {
+			var radius = Math.cos(radians * this.bumpCount) * outlineScale + outlineRadius,
 				coord = {
-				x: this.canvas.width / 2 + Math.cos(radians / this.bumpCount + this.rotation) * radius, 
-				y: this.canvas.height / 2 + Math.sin(radians / this.bumpCount + this.rotation) * radius
+				x: this.canvas.width / 2 + Math.cos(radians + this.rotation) * radius, 
+				y: this.canvas.height / 2 + Math.sin(radians + this.rotation) * radius
 			};
 			coords.push(coord);
 		}
+
+		this.drawBezierCurvesBetweenPoints(coords);
+
+		this.context.lineWidth = 3;
+		this.context.fillStyle = color;
+		this.context.stroke();
+		this.context.fill();
+	},
+	drawBezierCurvesBetweenPoints: function(coords) {
+
+		// draw bezier curves between a series of points
+		// if we're drawing a curve between points p1 and p2, then we use the points before and after these 
+		// two points (prev and next) to help calculate our control points.
+		// for control point 1, we start from p1 and add the slope of p2 - prev
+		// for control point 2, we start from p2 and add the slope of p1 - next
 
 		this.context.moveTo(coords[0].x, coords[0].y);
 		for(var i = 0; i < coords.length; i+=1)
@@ -102,13 +119,10 @@ var Polar1App = {
 				cp2.x, cp2.y,
 				p2.x, p2.y);
 		}
-
-		this.context.lineWidth = 3;
-		this.context.fillStyle = color;
-		this.context.stroke();
-		this.context.fill();
 	},
 	generateColors: function(count) {
+		var minColorDistance = 0.5;
+
 		// pick two random points in color space
 		do {
 			var r1 = this.colorRand.random(),
@@ -118,7 +132,7 @@ var Polar1App = {
 				g2 = this.colorRand.random(),
 				b2 = this.colorRand.random(),
 				distance = Math.sqrt((r2-r1)*(r2-r1)+(g2-g1)*(g2-g1)+(b2-b1)*(b2-b1));
-		} while(distance < 0.5);
+		} while(distance < minColorDistance);
 
 		var colors = [];
 		for(i = 0; i < count; i++) {
