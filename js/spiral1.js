@@ -9,7 +9,7 @@ var Spiral1App = {
 			"<div id='circleRadiusSlider' class='slider'></div>");
 
 		$('#patternIndexSlider').slider({
-			value: 1,
+			value: this.patternIndex,
 			min: 1,
 			max: 100,
 			slide: function(event, ui) {
@@ -19,7 +19,7 @@ var Spiral1App = {
 		});
 
 		$('#circleRadiusSlider').slider({
-			value: 7,
+			value: this.circleRadius,
 			min: 0,
 			max: 10,
 			slide: function(event, ui) {
