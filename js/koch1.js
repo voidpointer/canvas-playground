@@ -1,6 +1,18 @@
 var Koch1App = {
+	recursionCount: 6,
 	initControls: function(el) {
-		el.html("");
+		el.html("# of Recursions:" +
+			"<div id='recursionCountSlider' class='slider'></div>");
+
+		$('#recursionCountSlider').slider({
+			value: this.recursionCount,
+			min: 1,
+			max: 6,
+			slide: function(event, ui) {
+				Koch1App.recursionCount = ui.value;
+				Koch1App.render();
+			}
+		});		
 	},
 	render: function() {
 		this.canvas = document.getElementById('pgCanvas');
@@ -16,11 +28,11 @@ var Koch1App = {
 		Turtle.reset();
 		Turtle.begin(this.canvas);
 		Turtle.moveTo(x, y);
-		this.kochLine(sideLength, 6);
+		this.kochLine(sideLength, this.recursionCount);
 		Turtle.right(120);
-		this.kochLine(sideLength, 6);
+		this.kochLine(sideLength, this.recursionCount);
 		Turtle.right(120);
-		this.kochLine(sideLength, 6);
+		this.kochLine(sideLength, this.recursionCount);
 		Turtle.end();
 	},
 	kochLine: function(distance, level) {
