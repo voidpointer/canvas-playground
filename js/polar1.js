@@ -1,11 +1,24 @@
 var Polar1App = {
 	rotation: 0,
+	patternIndex: 0,
 	colorRandomSeed: 5,
 	colorRand: new Random(),
 	initControls: function(el) {
-		el.html("Rotation:" +
+		el.html("Pattern:" +
+			"<div id='patternSlider' class='slider'></div>" +
+			"Rotation:" +
 			"<div id='rotationSlider' class='slider'></div>" +
 			"<button onclick='Polar1App.colorRandomSeed = Math.random();Polar1App.render()'>Random Color</button>");
+
+		$('#patternSlider').slider({
+			value: 0,
+			min: 0,
+			max: 10,
+			slide: function(event, ui) {
+				Polar1App.patternIndex = ui.value;
+				Polar1App.render();
+			}
+		});
 
 		$('#rotationSlider').slider({
 			value: 0,
@@ -36,8 +49,9 @@ var Polar1App = {
 	renderShape: function(outlineRadius, outlineScale, color) {
 		this.context.beginPath();
 
+		var degDiffs = [10, 30, 50, 55, 60, 75, 80, 100, 120, 150, 200];
 		var coords = [];
-		var degDiff = 30, totalDegrees = 3600;
+		var degDiff = degDiffs[this.patternIndex], totalDegrees = 3600;
 		for(var i = 0; i < totalDegrees; i += degDiff) {
 			var radians = i * Math.PI / 180,
 				radius = Math.sin(radians) * outlineScale + outlineRadius,
