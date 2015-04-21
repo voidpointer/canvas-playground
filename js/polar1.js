@@ -2,7 +2,7 @@ var Polar1App = {
 	bumpCount: 8,
 	amplitude: 8,
 	rotation: 0,
-	colorRandomSeed: 5,
+	colorRandomSeed: 11,
 	colorRand: new Random(),
 	initControls: function(el) {
 		el.html("# of Bumps:" +
@@ -118,7 +118,7 @@ var Polar1App = {
 				g2 = this.colorRand.random(),
 				b2 = this.colorRand.random(),
 				distance = Math.sqrt((r2-r1)*(r2-r1)+(g2-g1)*(g2-g1)+(b2-b1)*(b2-b1));
-		} while(distance < 0.75);
+		} while(distance < 0.5);
 
 		var colors = [];
 		for(i = 0; i < count; i++) {
