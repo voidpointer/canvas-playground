@@ -1,21 +1,21 @@
 var Polar1App = {
-	bumpCount: 12,
-	patternIndex: 0,
+	bumpCount: 8,
+	amplitude: 8,
 	rotation: 0,
 	colorRandomSeed: 5,
 	colorRand: new Random(),
 	initControls: function(el) {
 		el.html("# of Bumps:" +
 			"<div id='bumpCountSlider' class='slider'></div>" +
-			"Pattern:" +
-			"<div id='patternSlider' class='slider'></div>" +
+			"Amplitude:" +
+			"<div id='amplitudeSlider' class='slider'></div>" +
 			"Rotation:" +
 			"<div id='rotationSlider' class='slider'></div>" +
 			"<button onclick='Polar1App.colorRandomSeed = Math.random();Polar1App.render()'>Random Color</button>");
 
 		$('#bumpCountSlider').slider({
 			value: this.bumpCount,
-			min: 2,
+			min: 1,
 			max: 20,
 			slide: function(event, ui) {
 				Polar1App.bumpCount = ui.value;
@@ -23,12 +23,12 @@ var Polar1App = {
 			}
 		});
 
-		$('#patternSlider').slider({
-			value: this.patternIndex,
-			min: 0,
+		$('#amplitudeSlider').slider({
+			value: this.amplitude,
+			min: 1,
 			max: 10,
 			slide: function(event, ui) {
-				Polar1App.patternIndex = ui.value;
+				Polar1App.amplitude = ui.value;
 				Polar1App.render();
 			}
 		});
@@ -52,39 +52,55 @@ var Polar1App = {
 		this.colorRand.setRandomSeed(this.colorRandomSeed);
 
 		var numShapes = 10;
-		var colors = this.generateColors2(numShapes);
+		var colors = this.generateColors(numShapes);
 		var colorIndex = 0;
 		for(var i = numShapes; i > 0; i--) {
 			var diff = (this.canvas.width / 2 * 1.6) / numShapes;
-			this.renderShape(i * diff, diff * 0.9, colors[colorIndex++]);
+			this.renderShape(i * diff, diff * (0.1*this.amplitude), colors[colorIndex++]);
 		}
 	},
 	renderShape: function(outlineRadius, outlineScale, color) {
 		this.context.beginPath();
 
-		var degDiffs = [10, 30, 50, 55, 60, 75, 80, 100, 120, 150, 200];
 		var coords = [];
-		var degDiff = degDiffs[this.patternIndex], totalDegrees = 360*this.bumpCount;
+		var degDiff = 15, 
+			totalDegrees = 360*this.bumpCount;
 		for(var i = 0; i < totalDegrees; i += degDiff) {
 			var radians = i * Math.PI / 180,
-				radius = Math.sin(radians) * outlineScale + outlineRadius,
+				radius = Math.cos(radians) * outlineScale + outlineRadius,
 				coord = {
-				x: this.canvas.width / 2 + Math.cos(radians * 360 / totalDegrees + this.rotation) * radius, 
-				y: this.canvas.height / 2 + Math.sin(radians * 360 / totalDegrees + this.rotation) * radius
+				x: this.canvas.width / 2 + Math.cos(radians / this.bumpCount + this.rotation) * radius, 
+				y: this.canvas.height / 2 + Math.sin(radians / this.bumpCount + this.rotation) * radius
 			};
 			coords.push(coord);
 		}
 
 		this.context.moveTo(coords[0].x, coords[0].y);
-		for(var i = 1; i < coords.length; i+=3)
+		for(var i = 0; i < coords.length; i+=1)
 		{
-			var i1 = i % coords.length;
-			var i2 = (i + 1) % coords.length;
-			var i3 = (i + 2) % coords.length;
+			var prev = coords[(i + coords.length - 1) % coords.length], // previous point
+				p1 = coords[i],	// current point
+				p2 = coords[(i + 1) % coords.length], // next point
+				next = coords[(i + 2) % coords.length]; // point after next
+
+			var cpscale = 0.2;
+
+			// use slopes of nearby points to calculate control points
+
+			var cp1 = { // control point 1
+				x: p1.x + (p2.x - prev.x) * cpscale,
+				y: p1.y + (p2.y - prev.y) * cpscale
+			};
+
+			var cp2 = { // control point 2
+				x: p2.x + (p1.x - next.x) * cpscale,
+				y: p2.y + (p1.y - next.y) * cpscale
+			};
+
 			this.context.bezierCurveTo(
-				coords[i1].x, coords[i1].y,
-				coords[i2].x, coords[i2].y,
-				coords[i3].x, coords[i3].y);
+				cp1.x, cp1.y,
+				cp2.x, cp2.y,
+				p2.x, p2.y);
 		}
 
 		this.context.lineWidth = 3;
@@ -93,19 +109,6 @@ var Polar1App = {
 		this.context.fill();
 	},
 	generateColors: function(count) {
-		var colors = [];
-		for(var i = 0; i < count; i++) {
-			x = 0.5 + Math.cos(i * Math.PI * 2 / count / 4) * 0.5;
-			y = 0.5 + Math.sin(i * Math.PI * 2 / count / 4) * 0.5;
-			r = Math.floor(x * 255);
-			g = Math.floor(y * 255);
-			b = 0;
-			colors.push('rgb(' + r + ',' + g +',' + b + ')');
-		}
-		return colors;
-
-	},
-	generateColors2: function(count) {
 		// pick two random points in color space
 		do {
 			var r1 = this.colorRand.random(),
