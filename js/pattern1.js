@@ -89,5 +89,5 @@ Playground.addModule({
 	name: 'Pattern',
 	slug: 'pattern1',
 	obj: Pattern1App,
-	source: ['js/pattern1.js']
+	source: ['js/pattern1.js', 'js/random.js']
 });

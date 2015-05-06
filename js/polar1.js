@@ -156,5 +156,5 @@ Playground.addModule({
 	name: 'Splat',
 	slug: 'polar1',
 	obj: Polar1App,
-	source: ['js/polar1.js']
+	source: ['js/polar1.js', 'js/random.js']
 });
